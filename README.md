@@ -6,15 +6,15 @@ For an overview of the available functionality, see [Functionality overview](htt
 To obtain a query, create a <i>TypeSafeQueryDao</i> with the hibernate sessionFactory and call the <i>`createQuery()`</i> method on it. 
 
 ```java
-TypeSafeQueryDao dao = new TypeSafeQueryDaoImpl(sessionFactory);
-TypeSafeRootQuery query = dao.createQuery();
+TypeSafeQueryDao queryProvider = new TypeSafeQueryDaoImpl(sessionFactory);
+TypeSafeRootQuery query = queryProvider.createQuery();
 ```
 
 To list the query results, call the <i>`doQuery(TypeSafeRootQuery query)`</i> method available on the <i>TypeSafeQueryDao</i>.
 
 ```java
 // build useful query and then use doQuery to list the results:
-List<InterestingData> results = dao.doQuery(query);
+List<InterestingData> results = queryProvider.doQuery(query);
 ```
 
 #### From clause
