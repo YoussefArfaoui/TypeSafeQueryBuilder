@@ -29,7 +29,7 @@ import java.util.Map.Entry;
  * Works together with TypeSafeQueryResultTransformer in order to select nested values fast.
  */
 public class SelectionTree {
-    private final LinkedHashMap<Field, SelectionTree> subtrees = new LinkedHashMap<>();
+    private final LinkedHashMap<Field, SelectionTree> subtrees = new LinkedHashMap<Field, SelectionTree>();
     private final Class<?> resultType;
     private int resultIndex;
 

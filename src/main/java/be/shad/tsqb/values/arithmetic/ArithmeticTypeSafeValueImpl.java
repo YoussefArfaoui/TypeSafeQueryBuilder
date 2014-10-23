@@ -32,7 +32,7 @@ public class ArithmeticTypeSafeValueImpl extends TypeSafeValueImpl<Number> imple
 
     public ArithmeticTypeSafeValueImpl(TypeSafeQuery query, TypeSafeValue<Number> firstValue) {
         super(query, firstValue.getValueClass());
-        this.combinedValue = new OperationTypeSafeValue<>(query, firstValue, 
+        this.combinedValue = new OperationTypeSafeValue<Number>(query, firstValue, 
                 OperationTypeSafeValueBracketsPolicy.WhenMoreThanOne);
     }
 

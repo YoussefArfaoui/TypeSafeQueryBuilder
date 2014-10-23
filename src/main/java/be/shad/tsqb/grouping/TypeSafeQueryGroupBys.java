@@ -27,7 +27,7 @@ import be.shad.tsqb.values.HqlQueryValue;
 import be.shad.tsqb.values.TypeSafeValue;
 
 public class TypeSafeQueryGroupBys implements HqlQueryBuilder, Copyable {
-    private final List<TypeSafeValue<?>> values = new LinkedList<>();
+    private final List<TypeSafeValue<?>> values = new LinkedList<TypeSafeValue<?>>();
 
     /**
      * Copy constructor

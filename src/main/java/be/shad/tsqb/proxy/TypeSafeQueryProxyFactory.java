@@ -32,13 +32,10 @@ public final class TypeSafeQueryProxyFactory {
 
     private static final MethodFilter METHOD_FILTER = new MethodFilter() {
         public boolean isHandled(Method m) {
-            switch( m.getName() ) {
-                case "finalize":
-                case "hashCode":
-                case "equals":
-                    return false;
-                default: 
-                    return true;
+            if (m.getName().equals("finalize") || m.getName().equals("hashCode") || m.getName().equals("equals")) {
+                return false;
+            } else {
+                return true;
             }
         }
     };
@@ -49,15 +46,18 @@ public final class TypeSafeQueryProxyFactory {
     public TypeSafeQueryProxyFactory() {
         proxyClasses = new HashMap[TypeSafeQueryProxyType.values().length];
         for (int i = 0, n = TypeSafeQueryProxyType.values().length; i < n; i++) {
-            proxyClasses[i] = new HashMap<>();
+            proxyClasses[i] = new HashMap<Class<?>, Class<?>>();
         }
     }
 
     public <T> T getProxy(Class<T> fromClass, TypeSafeQueryProxyType type) {
         try {
             return (T) getProxyClass(fromClass, type).newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (InstantiationException  e) {
             throw new RuntimeException(e);
+        }
+        catch (IllegalAccessException e1 ) {
+            throw new RuntimeException(e1);
         }
     }
     

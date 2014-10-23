@@ -714,7 +714,7 @@ public abstract class AbstractTypeSafeQuery implements TypeSafeQuery, TypeSafeQu
      */
     @Override
     public <VAL> CustomTypeSafeValue<VAL> customValue(Class<VAL> valueClass, String hql, Object... params) {
-        return new CustomTypeSafeValue<>(this, valueClass, HqlQueryValueImpl.hql(hql, params));
+        return new CustomTypeSafeValue<VAL>(this, valueClass, HqlQueryValueImpl.hql(hql, params));
     }
 
     /**
@@ -722,7 +722,7 @@ public abstract class AbstractTypeSafeQuery implements TypeSafeQuery, TypeSafeQu
      */
     @Override
     public <VAL> CaseTypeSafeValue<VAL> caseWhenValue(Class<VAL> valueClass) {
-        return new CaseTypeSafeValue<>(this, valueClass);
+        return new CaseTypeSafeValue<VAL>(this, valueClass);
     }
 
     /**
@@ -789,7 +789,7 @@ public abstract class AbstractTypeSafeQuery implements TypeSafeQuery, TypeSafeQu
      */
     @Override
     public <T> TypeSafeSubQuery<T> subquery(Class<T> clazz) {
-        return new TypeSafeSubQueryImpl<>(clazz, helper, this);
+        return new TypeSafeSubQueryImpl<T>(clazz, helper, this);
     }
 
     /**

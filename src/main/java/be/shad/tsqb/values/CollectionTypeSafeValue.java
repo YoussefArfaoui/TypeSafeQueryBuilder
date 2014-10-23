@@ -42,9 +42,10 @@ public class CollectionTypeSafeValue<T> extends TypeSafeValueImpl<T> implements 
         if (original.values != null) {
             try {
                 values = original.values.getClass().newInstance();
-            } catch (InstantiationException | IllegalAccessException e) {
-                throw new RuntimeException("Couldn't create same "
-                        + "collection as existing collection.", e);
+            } catch (InstantiationException e) {
+                throw new RuntimeException("Couldn't create same " + "collection as existing collection.", e);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("Couldn't create same " + "collection as existing collection.", e);
             }
             for(T value: original.values){
                 values.add(context.getOrOriginal(value));
@@ -143,7 +144,7 @@ public class CollectionTypeSafeValue<T> extends TypeSafeValueImpl<T> implements 
 
     @Override
     public Copyable copy(CopyContext context) {
-        return new CollectionTypeSafeValue<>(context, this);
+        return new CollectionTypeSafeValue(context, this);
     }
 
     /**

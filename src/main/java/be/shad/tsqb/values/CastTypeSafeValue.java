@@ -47,7 +47,7 @@ public class CastTypeSafeValue<T> extends TypeSafeValueImpl<T> {
     
     @Override
     public Copyable copy(CopyContext context) {
-        return new CastTypeSafeValue<>(context, this);
+        return new CastTypeSafeValue(context, this);
     }
 
 }

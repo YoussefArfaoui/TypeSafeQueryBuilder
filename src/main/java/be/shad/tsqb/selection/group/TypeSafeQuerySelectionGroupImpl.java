@@ -40,7 +40,7 @@ public class TypeSafeQuerySelectionGroupImpl implements TypeSafeQuerySelectionGr
         this.resultClass = resultClass;
         this.resultGroup = resultGroup;
         this.subselectValueMerger = subselectValueMerger;
-        this.resultIdentifierPropertyPaths = new HashSet<>();
+        this.resultIdentifierPropertyPaths = new HashSet<String>();
         if (parent != null) {
             if (subselectValueMerger == null) {
                 this.collectionPropertyPath = parent.getEffectivePropertyPath();
@@ -61,7 +61,7 @@ public class TypeSafeQuerySelectionGroupImpl implements TypeSafeQuerySelectionGr
         this.aliasPrefix = original.aliasPrefix;
         this.resultClass = original.resultClass;
         this.resultGroup = original.resultGroup;
-        this.resultIdentifierPropertyPaths = new HashSet<>(original.resultIdentifierPropertyPaths);
+        this.resultIdentifierPropertyPaths = new HashSet<String>(original.resultIdentifierPropertyPaths);
         this.subselectValueMerger = context.getOrOriginal(original.subselectValueMerger);
         this.collectionPropertyPath = original.collectionPropertyPath;
         this.parent = context.get(original.parent);

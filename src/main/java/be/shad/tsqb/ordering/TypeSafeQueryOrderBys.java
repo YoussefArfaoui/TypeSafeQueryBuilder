@@ -30,7 +30,7 @@ import be.shad.tsqb.values.HqlQueryBuilderParams;
 import be.shad.tsqb.values.TypeSafeValue;
 
 public class TypeSafeQueryOrderBys implements OnGoingOrderBy, HqlQueryBuilder, Copyable {
-    private final List<OrderBy> orderBys = new LinkedList<>();
+    private final List<OrderBy> orderBys = new LinkedList<OrderBy>();
     private final TypeSafeQueryInternal query;
 
     public TypeSafeQueryOrderBys(TypeSafeQueryInternal query) {

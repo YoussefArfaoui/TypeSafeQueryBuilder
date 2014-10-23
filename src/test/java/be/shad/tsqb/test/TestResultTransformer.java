@@ -51,7 +51,7 @@ public class TestResultTransformer extends TypeSafeQueryTest {
     @Test
     public void testResultTransformerSetsNestedFields() {
         //String hql = "select hobj1.name as name, hobj1.name as properties_planning_algorithm from Product hobj1";
-        List<String[]> paths = new ArrayList<>();
+        List<String[]> paths = new ArrayList<String[]>();
         paths.add(new String[] { "name" });
         paths.add(new String[] { "properties", "planning", "algorithm" });
 
@@ -105,8 +105,8 @@ public class TestResultTransformer extends TypeSafeQueryTest {
         Product product = query.select(Product.class);
         ManyProperties manyProperties = product.getManyProperties();
         
-        List<String> aliases = new ArrayList<>();
-        List<String> aliasToBeanResultAliases = new ArrayList<>();
+        List<String> aliases = new ArrayList<String>();
+        List<String> aliasToBeanResultAliases = new ArrayList<String>();
         for(int i=1; i < 80; i++) {
             manyProperties.getClass().getMethod("setProperty"+i, String.class).invoke(manyProperties, "");
             aliases.add("manyProperties_property" + i);

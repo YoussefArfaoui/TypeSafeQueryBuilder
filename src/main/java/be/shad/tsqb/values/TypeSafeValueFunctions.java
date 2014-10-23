@@ -30,7 +30,7 @@ public class TypeSafeValueFunctions {
     }
     
     public <VAL> CaseTypeSafeValue<VAL> caseWhen(Class<VAL> valueClass) {
-        return new CaseTypeSafeValue<>(query, valueClass);
+        return new CaseTypeSafeValue<VAL>(query, valueClass);
     }
     
     public <VAL> TypeSafeValue<VAL> distinct(VAL val) {
@@ -38,11 +38,11 @@ public class TypeSafeValueFunctions {
     }
 
     public <VAL> TypeSafeValue<VAL> distinct(TypeSafeValue<VAL> val) {
-        return new DistinctTypeSafeValue<>(query, val);
+        return new DistinctTypeSafeValue<VAL>(query, val);
     }
 
     public TypeSafeValue<Long> count() {
-        return new CustomTypeSafeValue<>(query, Long.class, "count(*)");
+        return new CustomTypeSafeValue<Long>(query, Long.class, "count(*)");
     }
     
     public <VAL> TypeSafeValue<Long> countDistinct(VAL val) {
@@ -58,7 +58,7 @@ public class TypeSafeValueFunctions {
     }
 
     public <VAL, CAST> TypeSafeValue<CAST> cast(TypeSafeValue<VAL> val, Class<CAST> type) {
-        return new CastTypeSafeValue<>(query, type, val);
+        return new CastTypeSafeValue<CAST>(query, type, val);
     }
     
     public <VAL> CoalesceTypeSafeValue<VAL> coalesce(VAL val) {
@@ -66,7 +66,7 @@ public class TypeSafeValueFunctions {
     }
     
     public <VAL> CoalesceTypeSafeValue<VAL> coalesce(TypeSafeValue<VAL> val) {
-        CoalesceTypeSafeValue<VAL> coalesce = new CoalesceTypeSafeValue<>(query, val.getValueClass());
+        CoalesceTypeSafeValue<VAL> coalesce = new CoalesceTypeSafeValue<VAL>(query, val.getValueClass());
         coalesce.or(val);
         return coalesce;
     }
@@ -76,7 +76,7 @@ public class TypeSafeValueFunctions {
     }
 
     public TypeSafeValue<String> upper(TypeSafeValue<String> val) {
-        return new WrappedTypeSafeValue<>(query, "upper", val);
+        return new WrappedTypeSafeValue<String>(query, "upper", val);
     }
     
     public TypeSafeValue<String> lower(String val) {
@@ -84,7 +84,7 @@ public class TypeSafeValueFunctions {
     }
 
     public TypeSafeValue<String> lower(TypeSafeValue<String> val) {
-        return new WrappedTypeSafeValue<>(query, "lower", val);
+        return new WrappedTypeSafeValue<String>(query, "lower", val);
     }
 
     public <N extends Number> TypeSafeValue<N> min(N n) {
@@ -92,7 +92,7 @@ public class TypeSafeValueFunctions {
     }
 
     public <N extends Number> TypeSafeValue<N> minn(TypeSafeValue<N> nv) {
-        return new WrappedTypeSafeValue<>(query, "min", nv);
+        return new WrappedTypeSafeValue<N>(query, "min", nv);
     }
     
     public TypeSafeValue<Date> max(Date n) {
@@ -100,7 +100,7 @@ public class TypeSafeValueFunctions {
     }
 
     public TypeSafeValue<Date> maxd(TypeSafeValue<Date> nv) {
-        return new WrappedTypeSafeValue<>(query, "max", nv);
+        return new WrappedTypeSafeValue<Date>(query, "max", nv);
     }
     
     public TypeSafeValue<Date> min(Date n) {
@@ -108,7 +108,7 @@ public class TypeSafeValueFunctions {
     }
 
     public TypeSafeValue<Date> mind(TypeSafeValue<Date> nv) {
-        return new WrappedTypeSafeValue<>(query, "min", nv);
+        return new WrappedTypeSafeValue<Date>(query, "min", nv);
     }
     
     public <N extends Number> TypeSafeValue<N> max(N n) {
@@ -116,7 +116,7 @@ public class TypeSafeValueFunctions {
     }
 
     public <N extends Number> TypeSafeValue<N> maxn(TypeSafeValue<N> nv) {
-        return new WrappedTypeSafeValue<>(query, "max", nv);
+        return new WrappedTypeSafeValue<N>(query, "max", nv);
     }
     
     public <N extends Number> TypeSafeValue<N> avg(N n) {
@@ -124,7 +124,7 @@ public class TypeSafeValueFunctions {
     }
 
     public <N extends Number> TypeSafeValue<N> avg(TypeSafeValue<N> nv) {
-        return new WrappedTypeSafeValue<>(query, "avg", nv);
+        return new WrappedTypeSafeValue<N>(query, "avg", nv);
     }
     
     public <N extends Number> TypeSafeValue<N> sum(N n) {
@@ -132,14 +132,14 @@ public class TypeSafeValueFunctions {
     }
 
     public <N extends Number> TypeSafeValue<N> sum(TypeSafeValue<N> nv) {
-        return new WrappedTypeSafeValue<>(query, "sum", nv);
+        return new WrappedTypeSafeValue<N>(query, "sum", nv);
     }
 
     /**
      * Wrapps the value in brackets.
      */
     public <N> TypeSafeValue<N> wrap(TypeSafeValue<N> value) {
-        return new WrappedTypeSafeValue<>(query, "", value);
+        return new WrappedTypeSafeValue<N>(query, "", value);
     }
     
 }

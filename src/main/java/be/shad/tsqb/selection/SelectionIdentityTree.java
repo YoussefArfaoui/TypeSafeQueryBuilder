@@ -27,7 +27,7 @@ public class SelectionIdentityTree {
     private Object identityValue;
 
     public SelectionIdentityTree() {
-        this.subtrees = new HashMap<>();
+        this.subtrees = new HashMap<Object, SelectionIdentityTree>();
     }
 
     /**

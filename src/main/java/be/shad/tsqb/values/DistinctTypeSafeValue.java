@@ -47,7 +47,7 @@ public class DistinctTypeSafeValue<VAL> extends TypeSafeValueImpl<VAL> implement
 
     @Override
     public Copyable copy(CopyContext context) {
-        return new DistinctTypeSafeValue<>(context, this);
+        return new DistinctTypeSafeValue(context, this);
     }
 
 }

@@ -43,7 +43,7 @@ import be.shad.tsqb.values.TypeSafeValue;
 public class RestrictionsGroupImpl extends RestrictionChainableImpl implements RestrictionAndChainable, RestrictionsGroupInternal {
     private final TypeSafeQueryInternal query;
     private final TypeSafeQueryProxyData join;
-    private final List<RestrictionNode> restrictions = new LinkedList<>();
+    private final List<RestrictionNode> restrictions = new LinkedList<RestrictionNode>();
     private RestrictionsGroupBracketsPolicy bracketsPolicy;
 
     public RestrictionsGroupImpl(TypeSafeQueryInternal query,
@@ -268,9 +268,10 @@ public class RestrictionsGroupImpl extends RestrictionChainableImpl implements R
         return add(customValue, Or);
     }
 
+
     private RestrictionChainable add(HqlQueryValue customValue, RestrictionNodeType type) {
         TypeSafeValue<Object> value = new CustomTypeSafeValue<Object>(query, Object.class, customValue);
-        return add(new RestrictionImpl<>(this, null, value, null, null), type);
+        return add(new RestrictionImpl(this, null, value, null, null), type);
     }
 
     /**

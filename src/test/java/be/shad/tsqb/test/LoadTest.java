@@ -34,7 +34,7 @@ public class LoadTest extends TypeSafeQueryTest {
     }
 
     public void loadTest() {
-        Collection<String> names = new ArrayList<>();
+        Collection<String> names = new ArrayList<String>();
         for(int i=0; i < 500; i++) {
             names.add("name" + i);
         }

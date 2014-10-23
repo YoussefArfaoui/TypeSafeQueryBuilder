@@ -9,7 +9,7 @@ import be.shad.tsqb.query.copy.Copyable;
 import be.shad.tsqb.values.NamedValueEnabled;
 
 public class TypeSafeNamedsImpl implements TypeSafeNameds, Copyable {
-    private final Map<String, Object> nameds = new HashMap<>();
+    private final Map<String, Object> nameds = new HashMap<String, Object>();
     
     public TypeSafeNamedsImpl() {
         // nothing extra

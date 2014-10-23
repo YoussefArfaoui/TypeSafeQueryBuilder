@@ -31,7 +31,7 @@ import be.shad.tsqb.query.JoinType;
  */
 public class TypeSafeQueryProxyData {
 
-    private final LinkedHashMap<String, TypeSafeQueryProxyData> children = new LinkedHashMap<>();
+    private final LinkedHashMap<String, TypeSafeQueryProxyData> children = new LinkedHashMap<String, TypeSafeQueryProxyData>();
     private final TypeSafeQueryProxyType proxyType;
     private final TypeSafeQueryProxyData parent;
     private final TypeSafeQueryProxy proxy;

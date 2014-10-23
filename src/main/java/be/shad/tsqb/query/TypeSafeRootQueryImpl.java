@@ -80,8 +80,8 @@ public class TypeSafeRootQueryImpl extends AbstractTypeSafeQuery implements Type
      */
     @Override
     protected void initializeDefaults() {
-        invocationQueue = new LinkedList<>();
-        customAliasedProxies = new HashMap<>();
+        invocationQueue = new LinkedList<TypeSafeQueryProxyData>();
+        customAliasedProxies = new HashMap<String, TypeSafeQueryProxy>();
         entityAliasCount = 1;
         selectionGroupAliasCount = 1;
         firstResult = -1;
@@ -188,7 +188,7 @@ public class TypeSafeRootQueryImpl extends AbstractTypeSafeQuery implements Type
      */
     public List<TypeSafeQueryProxyData> dequeueInvocations() {
         List<TypeSafeQueryProxyData> old = invocationQueue;
-        invocationQueue = new LinkedList<>();
+        invocationQueue = new LinkedList<TypeSafeQueryProxyData>();
         return old;
     }
 

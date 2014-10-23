@@ -101,7 +101,7 @@ public class ValuesCopyTest extends TypeSafeQueryCopyTest {
         Person personProxy = query.from(Person.class);
         query.named().name(personProxy, PERSON_OBJ);
         
-        List<String> originalNames = new ArrayList<>(asList("A", "B"));
+        List<String> originalNames = new ArrayList<String>(asList("A", "B"));
         query.where(personProxy.getName()).in().named("namesParam", originalNames);
 
         validateAndCopy(PERSON_OBJ, 

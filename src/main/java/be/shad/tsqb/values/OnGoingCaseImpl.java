@@ -178,7 +178,7 @@ public class OnGoingCaseImpl<T> extends RestrictionChainableDelegatingImpl imple
 
     @Override
     public Copyable copy(CopyContext context) {
-        return new OnGoingCaseImpl<>(context, this);
+        return new OnGoingCaseImpl(context, this);
     }
     
 }

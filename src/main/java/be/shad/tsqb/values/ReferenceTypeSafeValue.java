@@ -54,7 +54,7 @@ public class ReferenceTypeSafeValue<T> extends TypeSafeValueImpl<T> {
     
     @Override
     public Copyable copy(CopyContext context) {
-        return new ReferenceTypeSafeValue<>(context, this);
+        return new ReferenceTypeSafeValue(context, this);
     }
 
 }

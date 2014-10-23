@@ -109,7 +109,7 @@ public abstract class OnGoingRestrictionImpl<VAL, CONTINUED extends ContinuedOnG
         TypeSafeValue<VAL> leftVal = (TypeSafeValue<VAL>) left;
         TypeSafeValue<VAL> rightVal = (TypeSafeValue<VAL>) right;
         if (restriction == null) {
-            restriction = new RestrictionImpl<>(group, predicate, 
+            restriction = new RestrictionImpl<VAL>(group, predicate, 
                     leftVal, operator, rightVal);
             if (restrictionNodeType == And) {
                 group.and(restriction);
@@ -238,7 +238,7 @@ public abstract class OnGoingRestrictionImpl<VAL, CONTINUED extends ContinuedOnG
      * Create a new unbound collection value.
      */
     protected CollectionTypeSafeValue<VAL> createCollectionValue() {
-        return new CollectionTypeSafeValue<>(group.getQuery(), getSupportedValueClass());
+        return new CollectionTypeSafeValue<VAL>(group.getQuery(), getSupportedValueClass());
     }
 
     /**
@@ -250,7 +250,7 @@ public abstract class OnGoingRestrictionImpl<VAL, CONTINUED extends ContinuedOnG
     }
 
     protected DirectTypeSafeValue<VAL> createDummyDirectValue() {
-        return new DirectTypeSafeValue<>(group.getQuery(), getSupportedValueClass());
+        return new DirectTypeSafeValue<VAL>(group.getQuery(), getSupportedValueClass());
     }
     
     @Override
@@ -282,7 +282,7 @@ public abstract class OnGoingRestrictionImpl<VAL, CONTINUED extends ContinuedOnG
     public <T extends VAL> CONTINUED notIn(Collection<T> values, RestrictionPredicate predicate) {
         this.predicate = predicate;
         // suppressing warnings because we know T is a kind of VAL, and we won't be changing the collection internally
-        return notIn(new CollectionTypeSafeValue<>(group.getQuery(), getSupportedValueClass(), (Collection) values));
+        return notIn(new CollectionTypeSafeValue<VAL>(group.getQuery(), getSupportedValueClass(), (Collection) values));
     }
     
     @Override
@@ -295,6 +295,6 @@ public abstract class OnGoingRestrictionImpl<VAL, CONTINUED extends ContinuedOnG
     public <T extends VAL> CONTINUED in(Collection<T> values, RestrictionPredicate predicate) {
         this.predicate = predicate;
         // suppressing warnings because we know T is a kind of VAL, and we won't be changing the collection internally
-        return in(new CollectionTypeSafeValue<>(group.getQuery(), getSupportedValueClass(), (Collection) values));
+        return in(new CollectionTypeSafeValue<VAL>(group.getQuery(), getSupportedValueClass(), (Collection) values));
     }
 }

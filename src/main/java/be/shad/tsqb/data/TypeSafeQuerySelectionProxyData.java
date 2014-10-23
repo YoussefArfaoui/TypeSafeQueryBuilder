@@ -22,7 +22,7 @@ import be.shad.tsqb.selection.group.TypeSafeQuerySelectionGroup;
 
 public class TypeSafeQuerySelectionProxyData {
 
-    private final LinkedHashMap<String, TypeSafeQuerySelectionProxyData> children = new LinkedHashMap<>();
+    private final LinkedHashMap<String, TypeSafeQuerySelectionProxyData> children = new LinkedHashMap<String, TypeSafeQuerySelectionProxyData>();
     private final TypeSafeQuerySelectionProxyData parent;
     private final Class<?> propertyType;
     private final String propertyPath;

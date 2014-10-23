@@ -116,7 +116,7 @@ public class TypeSafeQueryTest {
     protected void validate(TypeSafeRootQuery query, HqlQueryValue expected) {
         HqlQuery hqlQuery = doQuery(query);
 
-        List<Object> actualParams = new LinkedList<>();
+        List<Object> actualParams = new LinkedList<Object>();
         if (hqlQuery.getParams() != null) {
             for (Object queryParam : hqlQuery.getParams()) {
                 if (queryParam instanceof NamedParameter) {
@@ -141,7 +141,7 @@ public class TypeSafeQueryTest {
                 // don't care if the collection has a different order,
                 // as long as the elements are the same:
                 assertTrue(expectedHql + result, actualParam instanceof Collection);
-                assertEquals(expectedHql + result, new HashSet<>((Collection<?>) expectedParam), new HashSet<>((Collection<?>) actualParam));
+                assertEquals(expectedHql + result, new HashSet((Collection<?>) expectedParam), new HashSet((Collection<?>) actualParam));
             } else {
                 assertEquals(expectedHql + result, expectedParam, actualParam);
             }

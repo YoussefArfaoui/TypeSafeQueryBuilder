@@ -143,7 +143,9 @@ public class SelectionTreeGroup extends SelectionTree {
         for(int i=0; i < alias.length-1; i++) {
             try {
                 valueTree = valueTree.getSubtree(alias[i]);
-            } catch (NoSuchFieldException | SecurityException e) {
+            } catch (NoSuchFieldException e) {
+                throw new RuntimeException(e);
+            } catch (SecurityException e) {
                 throw new RuntimeException(e);
             }
         }

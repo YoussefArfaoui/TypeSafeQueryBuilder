@@ -28,7 +28,7 @@ import be.shad.tsqb.query.copy.Copyable;
  * value in the list which is not null is selected.
  */
 public class CoalesceTypeSafeValue<T> extends TypeSafeValueImpl<T> implements TypeSafeValueContainer {
-    private List<TypeSafeValue<T>> values = new LinkedList<>();
+    private List<TypeSafeValue<T>> values = new LinkedList<TypeSafeValue<T>>();
 
     /**
      * Copy constructor
@@ -56,7 +56,7 @@ public class CoalesceTypeSafeValue<T> extends TypeSafeValueImpl<T> implements Ty
     @Override
     public HqlQueryValue toHqlQueryValue(HqlQueryBuilderParams parameters) {
         StringBuilder coalesce = new StringBuilder();
-        List<Object> params = new LinkedList<>();
+        List<Object> params = new LinkedList<Object>();
         for(TypeSafeValue<T> value: values) {
             if( coalesce.length() > 0 ) {
                 coalesce.append(",");
@@ -85,7 +85,7 @@ public class CoalesceTypeSafeValue<T> extends TypeSafeValueImpl<T> implements Ty
     
     @Override
     public Copyable copy(CopyContext context) {
-        return new CoalesceTypeSafeValue<>(context, this);
+        return new CoalesceTypeSafeValue(context, this);
     }
     
 }

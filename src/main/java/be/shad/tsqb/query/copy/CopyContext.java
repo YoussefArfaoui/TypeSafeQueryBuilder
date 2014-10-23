@@ -20,7 +20,7 @@ import java.util.IdentityHashMap;
 public class CopyContext {
 
     // using identity map/set to make sure equals doesn't break the copy
-    private final IdentityHashMap<Object, Object> data = new IdentityHashMap<>();
+    private final IdentityHashMap<Object, Object> data = new IdentityHashMap<Object, Object>();
     
     /**
      * Looks up the copy of <code>originalOrCopy</code>.

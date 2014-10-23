@@ -70,7 +70,7 @@ public class CollectionSubselectTest extends TypeSafeQueryTest {
     public void initialize() {
         super.initialize();
         creator = new TestDataCreator(getSessionFactory());
-        defaultNames = new HashSet<>();
+        defaultNames = new HashSet<String>();
         defaultNames.add("JohnyTheKid");
         defaultNames.add("Josh");
         defaultNames.add("Albert");
@@ -258,9 +258,9 @@ public class CollectionSubselectTest extends TypeSafeQueryTest {
         TownDto townResult = results.get(0);
         assertEquals(6, townResult.getInhabitants().size());
 
-        Map<Long, Set<Long>> resultIds = new HashMap<>();
+        Map<Long, Set<Long>> resultIds = new HashMap<Long, Set<Long>>();
         for(PersonDto dto: townResult.getInhabitants()) {
-            Set<Long> childIds = new HashSet<>();
+            Set<Long> childIds = new HashSet<Long>();
             if (dto.getChildren() != null) {
                 for(PersonDto dtoChild: dto.getChildren()) {
                     childIds.add(dtoChild.getId());
@@ -277,7 +277,7 @@ public class CollectionSubselectTest extends TypeSafeQueryTest {
     }
 
     private Set<Long> toIds(DomainObject... dtos) {
-        Set<Long> ids = new HashSet<>();
+        Set<Long> ids = new HashSet<Long>();
         for(DomainObject dto: dtos) {
             ids.add(dto.getId());
         }
@@ -344,11 +344,11 @@ public class CollectionSubselectTest extends TypeSafeQueryTest {
         if (!town.getId().equals(selectTriplet.getFirst())) {
             fail("Town not correct." + selectTriplet);
         }
-        Set<Long> expected = new HashSet<>();
+        Set<Long> expected = new HashSet<Long>();
         for(Person person: people) {
             expected.add(person.getId());
         }
-        Set<Long> result = new HashSet<>();
+        Set<Long> result = new HashSet<Long>();
         for(PersonDto person: selectTriplet.getThird()) {
             result.add(person.getId());
         }

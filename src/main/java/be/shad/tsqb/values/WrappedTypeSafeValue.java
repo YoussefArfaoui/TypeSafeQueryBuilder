@@ -56,7 +56,7 @@ public class WrappedTypeSafeValue<T> extends TypeSafeValueImpl<T> implements Typ
 
     @Override
     public Copyable copy(CopyContext context) {
-        return new WrappedTypeSafeValue<>(context, this);
+        return new WrappedTypeSafeValue(context, this);
     }
     
 }

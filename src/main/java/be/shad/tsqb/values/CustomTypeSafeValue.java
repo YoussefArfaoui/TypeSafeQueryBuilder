@@ -60,7 +60,7 @@ public class CustomTypeSafeValue<T> extends TypeSafeValueImpl<T> {
 
     @Override
     public Copyable copy(CopyContext context) {
-        return new CustomTypeSafeValue<>(context, this);
+        return new CustomTypeSafeValue(context, this);
     }
 
 }

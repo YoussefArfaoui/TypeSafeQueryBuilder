@@ -74,11 +74,11 @@ public class TypeSafeQueryResultTransformer extends BasicTransformerAdapter {
             // Group selection data by group (transformed into selectionTreeValues):
             int tupleValueIndex = 0;
             Iterator<SelectionValueTransformer<?, ?>> valueTransformersIt = transformers.iterator();
-            Map<TypeSafeQuerySelectionGroup, List<SelectionTreeValue>> dataByGroup = new HashMap<>();
+            Map<TypeSafeQuerySelectionGroup, List<SelectionTreeValue>> dataByGroup = new HashMap<TypeSafeQuerySelectionGroup, List<SelectionTreeValue>>();
             for(TypeSafeQuerySelectionProxyData selectionData: selectionDatas) {
                 List<SelectionTreeValue> groupData = dataByGroup.get(selectionData.getGroup());
                 if (groupData == null) {
-                    groupData = new LinkedList<>();
+                    groupData = new LinkedList<SelectionTreeValue>();
                     dataByGroup.put(selectionData.getGroup(), groupData);
                 }
                 groupData.add(new SelectionTreeValue(tupleValueIndex++, 
@@ -87,13 +87,13 @@ public class TypeSafeQueryResultTransformer extends BasicTransformerAdapter {
             }
             
             // Sort all groups by depth/alias to create groups
-            List<TypeSafeQuerySelectionGroup> selectionGroups = new ArrayList<>(dataByGroup.keySet());
+            List<TypeSafeQuerySelectionGroup> selectionGroups = new ArrayList<TypeSafeQuerySelectionGroup>(dataByGroup.keySet());
             Collections.sort(selectionGroups, SELECTION_GROUPS_COMPARATOR);
             
             int parentResultIndex = -1;
             int treeGroupIdx = 1;
             this.treeGroups = new SelectionTreeGroup[dataByGroup.size()];
-            Map<TypeSafeQuerySelectionGroup, SelectionTreeGroup> treeGroupsMap = new HashMap<>();
+            Map<TypeSafeQuerySelectionGroup, SelectionTreeGroup> treeGroupsMap = new HashMap<TypeSafeQuerySelectionGroup, SelectionTreeGroup>();
             for(TypeSafeQuerySelectionGroup group: selectionGroups) {
                 // Create group (with any parent it may have) and save it for treeGroup iteration
                 SelectionTreeGroup tree = new SelectionTreeGroup(group, dataByGroup.get(group), 
@@ -110,7 +110,9 @@ public class TypeSafeQueryResultTransformer extends BasicTransformerAdapter {
                 treeGroupsMap.put(group, tree);
             }
             this.resultArraySize = parentResultIndex + 1;
-        } catch (SecurityException | NoSuchFieldException e) {
+        } catch (SecurityException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchFieldException e) {
             throw new RuntimeException(e);
         }
     }
@@ -151,7 +153,11 @@ public class TypeSafeQueryResultTransformer extends BasicTransformerAdapter {
                     result.add(data[0].getCurrentValue());
                 }
             }
-        } catch (IllegalArgumentException | IllegalAccessException | InstantiationException e) {
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
             throw new RuntimeException(e);
         }
         return result;

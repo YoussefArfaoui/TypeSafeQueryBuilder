@@ -33,7 +33,7 @@ public class TypeSafeQueryFrom implements HqlQueryBuilder {
 
     private final TypeSafeQueryHelper helper;
     private final TypeSafeQueryProxyData root;
-    private List<TypeSafeQueryJoin<?>> joins = new LinkedList<>();
+    private List<TypeSafeQueryJoin<?>> joins = new LinkedList<TypeSafeQueryJoin<?>>();
     
     public TypeSafeQueryFrom(TypeSafeQueryHelper helper,
             TypeSafeQueryProxyData root) {

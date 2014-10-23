@@ -34,8 +34,8 @@ public class OperationTypeSafeValue<T> extends TypeSafeValueImpl<T> implements T
         WhenMoreThanOne;
     }
     
-    private List<TypeSafeValue<? extends T>> values = new LinkedList<>();
-    private List<String> operations = new LinkedList<>();
+    private List<TypeSafeValue<? extends T>> values = new LinkedList<TypeSafeValue<? extends T>>();
+    private List<String> operations = new LinkedList<String>();
     private OperationTypeSafeValueBracketsPolicy bracketsPolicy;
 
     /**
@@ -115,7 +115,7 @@ public class OperationTypeSafeValue<T> extends TypeSafeValueImpl<T> implements T
     
     @Override
     public Copyable copy(CopyContext context) {
-        return new OperationTypeSafeValue<>(context, this);
+        return new OperationTypeSafeValue(context, this);
     }
 
 }

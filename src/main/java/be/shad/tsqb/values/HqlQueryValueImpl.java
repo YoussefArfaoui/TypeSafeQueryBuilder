@@ -27,7 +27,7 @@ import be.shad.tsqb.query.copy.Copyable;
  * convenient methods to append to them.
  */
 public class HqlQueryValueImpl implements HqlQueryValue, Copyable {
-    private List<Object> params = new LinkedList<>();
+    private List<Object> params = new LinkedList<Object>();
     private StringBuilder hql;
     
     /**

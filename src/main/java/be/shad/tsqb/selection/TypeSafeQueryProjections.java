@@ -42,7 +42,7 @@ import be.shad.tsqb.values.TypeSafeValue;
  */
 public class TypeSafeQueryProjections implements HqlQueryBuilder {
     private final TypeSafeQueryInternal query;
-    private final Deque<TypeSafeValueProjection> projections = new LinkedList<>();
+    private final Deque<TypeSafeValueProjection> projections = new LinkedList<TypeSafeValueProjection>();
     private SelectionValueTransformer<?, ?> transformerForNextProjection;
     private Class<?> resultClass;
 
@@ -131,14 +131,14 @@ public class TypeSafeQueryProjections implements HqlQueryBuilder {
                 value = (TypeSafeValue<?>) select;
             } else if( select instanceof TypeSafeQueryProxy ) {
                 // entity selection
-                value = new ReferenceTypeSafeValue<>(query, ((TypeSafeQueryProxy) select).getTypeSafeProxyData());
+                value = new ReferenceTypeSafeValue(query, ((TypeSafeQueryProxy) select).getTypeSafeProxyData());
             } else {
                 // direct value selection
-                value = new DirectTypeSafeValue<>(query, select);
+                value = new DirectTypeSafeValue(query, select);
             }
         } else {
             // value selection by proxy getter:
-            value = new ReferenceTypeSafeValue<>(query, invocations.get(0));
+            value = new ReferenceTypeSafeValue(query, invocations.get(0));
         }
         
         query.validateInScope(value, null);
@@ -161,8 +161,8 @@ public class TypeSafeQueryProjections implements HqlQueryBuilder {
 
     @Override
     public void appendTo(HqlQuery query, HqlQueryBuilderParams params) {
-        List<TypeSafeQuerySelectionProxyData> selectionDatas = new ArrayList<>(projections.size());
-        List<SelectionValueTransformer<?, ?>> transformers = new ArrayList<>(projections.size());
+        List<TypeSafeQuerySelectionProxyData> selectionDatas = new ArrayList<TypeSafeQuerySelectionProxyData>(projections.size());
+        List<SelectionValueTransformer<?, ?>> transformers = new ArrayList<SelectionValueTransformer<?, ?>>(projections.size());
         boolean hasTransformer = false;
         for(TypeSafeValueProjection projection: projections) {
             HqlQueryValue val;

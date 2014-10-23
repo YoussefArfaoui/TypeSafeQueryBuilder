@@ -42,10 +42,10 @@ import be.shad.tsqb.values.HqlQueryBuilderParams;
  * Contains the proxy data, the from and the joined entities data known in the query.
  */
 public class TypeSafeQueryProxyDataTree implements HqlQueryBuilder {
-    private final List<TypeSafeQueryFrom> froms = new ArrayList<>();
-    private final Map<TypeSafeQueryProxyData, TypeSafeQueryJoin<?>> joins = new HashMap<>();
-    private final Set<TypeSafeQueryProxyData> queryData = new LinkedHashSet<>();
-    private final List<TypeSafeQuerySelectionProxyData> selectionData = new LinkedList<>();
+    private final List<TypeSafeQueryFrom> froms = new ArrayList<TypeSafeQueryFrom>();
+    private final Map<TypeSafeQueryProxyData, TypeSafeQueryJoin<?>> joins = new HashMap<TypeSafeQueryProxyData, TypeSafeQueryJoin<?>>();
+    private final Set<TypeSafeQueryProxyData> queryData = new LinkedHashSet<TypeSafeQueryProxyData>();
+    private final List<TypeSafeQuerySelectionProxyData> selectionData = new LinkedList<TypeSafeQuerySelectionProxyData>();
     private final TypeSafeQueryHelper helper;
     private final TypeSafeQueryInternal query;
 
@@ -142,7 +142,7 @@ public class TypeSafeQueryProxyDataTree implements HqlQueryBuilder {
             }
             for(TypeSafeQueryFrom from: froms) {
                 if( from.getRoot().equals(root) ) {
-                    TypeSafeQueryJoin<Object> join = new TypeSafeQueryJoin<>(query, child);
+                    TypeSafeQueryJoin<Object> join = new TypeSafeQueryJoin<Object>(query, child);
                     joins.put(child, join);
                     from.addJoin(join);
                 }

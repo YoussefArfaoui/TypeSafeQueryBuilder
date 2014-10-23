@@ -83,7 +83,7 @@ public class TypeSafeQueryDaoImpl implements TypeSafeQueryDao {
         }
         query.setResultTransformer(hqlQuery.getResultTransformer());
         
-        return new QueryResult<>(query.list());
+        return new QueryResult<T>(query.list());
     }
 
     /**

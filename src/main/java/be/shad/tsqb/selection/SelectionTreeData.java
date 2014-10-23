@@ -22,7 +22,7 @@ import java.util.IdentityHashMap;
  */
 public class SelectionTreeData {
     // using IdentityHashMap so root so nested collection results are not considered duplicate if they have a different parent
-    public final IdentityHashMap<Object, SelectionIdentityTree> identityTrees = new IdentityHashMap<>();
+    public final IdentityHashMap<Object, SelectionIdentityTree> identityTrees = new IdentityHashMap<Object, SelectionIdentityTree>();
     private Object currentValue;
     private boolean duplicate;
     

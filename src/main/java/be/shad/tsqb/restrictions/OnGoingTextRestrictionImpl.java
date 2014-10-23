@@ -75,7 +75,7 @@ public class OnGoingTextRestrictionImpl
         if (values == null) {
             return null;
         }
-        Set<String> valuesSet = new HashSet<>(values.length);
+        Set<String> valuesSet = new HashSet<String>(values.length);
         for(String value: values) {
             valuesSet.add(value);
         }

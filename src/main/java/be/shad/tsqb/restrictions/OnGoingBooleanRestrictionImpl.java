@@ -73,7 +73,7 @@ public class OnGoingBooleanRestrictionImpl
      * {@inheritDoc}
      */
     public RestrictionChainable isFalse() {
-        TypeSafeValue<Boolean> falseValue = new DirectTypeSafeValue<>(group.getQuery(), Boolean.FALSE);
+        TypeSafeValue<Boolean> falseValue = new DirectTypeSafeValue<Boolean>(group.getQuery(), Boolean.FALSE);
         addRestrictionAndContinue(startValue, EQUAL, falseValue);
         return getRestrictionsGroup();
     }
@@ -82,7 +82,7 @@ public class OnGoingBooleanRestrictionImpl
      * {@inheritDoc}
      */
     public RestrictionChainable isTrue() {
-        TypeSafeValue<Boolean> falseValue = new DirectTypeSafeValue<>(group.getQuery(), Boolean.TRUE);
+        TypeSafeValue<Boolean> falseValue = new DirectTypeSafeValue<Boolean>(group.getQuery(), Boolean.TRUE);
         addRestrictionAndContinue(startValue, EQUAL, falseValue);
         return getRestrictionsGroup();
     }
@@ -92,7 +92,7 @@ public class OnGoingBooleanRestrictionImpl
      */
     @Override
     public ContinuedOnGoingBooleanRestriction isNamed(String alias) {
-        DirectTypeSafeValue<Boolean> value = new DirectTypeSafeValue<>(group.getQuery(), Boolean.class);
+        DirectTypeSafeValue<Boolean> value = new DirectTypeSafeValue<Boolean>(group.getQuery(), Boolean.class);
         ContinuedOnGoingBooleanRestriction continued = addRestrictionAndContinue(startValue, EQUAL, value);
         createNamedParameterBinder(value, continued).named(alias);
         return continued;

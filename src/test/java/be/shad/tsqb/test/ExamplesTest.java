@@ -511,7 +511,7 @@ public class ExamplesTest extends TypeSafeQueryTest {
         
         // when no function is available and the value can't be retrieved another way it's still possible to just inject hql
         // it doesn't look pretty, and it isn't supposed to.. because you probably shouldn't do this!
-        dto.setCustomString(new CustomTypeSafeValue<>(query, String.class, "'SomeCustomHql'").select());
+        dto.setCustomString(new CustomTypeSafeValue<String>(query, String.class, "'SomeCustomHql'").select());
 
         validate("select " + 
                  "(select count(*) from Person hobj3 where hobj3.town.id = hobj1.id) as inhabitants, " +

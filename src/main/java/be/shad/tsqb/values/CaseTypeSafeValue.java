@@ -30,7 +30,7 @@ import be.shad.tsqb.restrictions.RestrictionsGroupInternal;
  * Represents a case when() then ... (else ...) end.
  */
 public class CaseTypeSafeValue<T> extends TypeSafeValueImpl<T> implements OnGoingCaseWhen<T>, TypeSafeValueContainer {
-    private List<OnGoingCaseImpl<T>> cases = new LinkedList<>();
+    private List<OnGoingCaseImpl<T>> cases = new LinkedList<OnGoingCaseImpl<T>>();
 
     /**
      * Copy constructor
@@ -118,7 +118,7 @@ public class CaseTypeSafeValue<T> extends TypeSafeValueImpl<T> implements OnGoin
     
     @Override
     public Copyable copy(CopyContext context) {
-        return new CaseTypeSafeValue<>(context, this);
+        return new CaseTypeSafeValue(context, this);
     }
     
 }

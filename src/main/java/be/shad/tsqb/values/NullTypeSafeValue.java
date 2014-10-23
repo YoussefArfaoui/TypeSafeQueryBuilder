@@ -43,6 +43,6 @@ public final class NullTypeSafeValue<T> extends TypeSafeValueImpl<T> {
 
     @Override
     public Copyable copy(CopyContext context) {
-        return new NullTypeSafeValue<>(context, this);
+        return new NullTypeSafeValue(context, this);
     }
 }

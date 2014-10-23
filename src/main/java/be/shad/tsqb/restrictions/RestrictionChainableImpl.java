@@ -30,11 +30,11 @@ public abstract class RestrictionChainableImpl implements RestrictionChainable {
     protected abstract RestrictionsGroupInternal getRestrictionsGroup();
 
     private Restriction exists(TypeSafeSubQuery<?> subquery) {
-        return new RestrictionImpl<>(getRestrictionsGroup(), null, null, EXISTS, subquery);
+        return new RestrictionImpl(getRestrictionsGroup(), null, null, EXISTS, subquery);
     }
 
     private Restriction notExists(TypeSafeSubQuery<?> subquery) {
-        return new RestrictionImpl<>(getRestrictionsGroup(), null, null, NOT_EXISTS, subquery);
+        return new RestrictionImpl(getRestrictionsGroup(), null, null, NOT_EXISTS, subquery);
     }
 
     /**

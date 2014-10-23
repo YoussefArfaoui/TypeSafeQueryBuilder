@@ -82,7 +82,7 @@ public class DirectTypeSafeValue<T> extends TypeSafeValueImpl<T> implements Name
 
     @Override
     public Copyable copy(CopyContext context) {
-        return new DirectTypeSafeValue<>(context, this);
+        return new DirectTypeSafeValue(context, this);
     }
 
 }
