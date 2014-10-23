@@ -26,13 +26,12 @@ import java.lang.reflect.Method;
 import javassist.util.proxy.ProxyObject;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.engine.SessionFactoryImplementor;
 import org.hibernate.metadata.ClassMetadata;
-import org.hibernate.type.BasicType;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.ComponentType;
-import org.hibernate.type.StringRepresentableType;
 import org.hibernate.type.Type;
+import org.hibernate.type.TypeFactory;
 
 import be.shad.tsqb.data.TypeSafeQueryProxyData;
 import be.shad.tsqb.data.TypeSafeQuerySelectionProxyData;
@@ -62,9 +61,9 @@ public class TypeSafeQueryHelperImpl implements TypeSafeQueryHelper {
     }
 
     private Type getTargetType(TypeSafeQueryProxyData data, String property) {
-        if ( data.getProxyType().isComposite() ) {
-            return sessionFactory.getClassMetadata(data.getCompositeTypeEntityParent().getPropertyType()).
-                    getPropertyType(data.getCompositePropertyPath() + "." + property);
+        if (data.getProxyType().isComposite()) {
+            return sessionFactory.getClassMetadata(data.getCompositeTypeEntityParent().getPropertyType()).getPropertyType(
+                    data.getCompositePropertyPath() + "." + property);
         }
         return sessionFactory.getClassMetadata(data.getPropertyType()).getPropertyType(property);
     }
@@ -73,10 +72,9 @@ public class TypeSafeQueryHelperImpl implements TypeSafeQueryHelper {
      * Retrieves the type information from hibernate.
      */
     private Class<?> getTargetEntityClass(Type propertyType) {
-        if( CollectionType.class.isAssignableFrom(propertyType.getClass()) ) {
+        if (CollectionType.class.isAssignableFrom(propertyType.getClass())) {
             CollectionType collectionType = (CollectionType) propertyType;
-            Type elementType = collectionType.getElementType(
-                    (SessionFactoryImplementor) sessionFactory);
+            Type elementType = collectionType.getElementType((SessionFactoryImplementor) sessionFactory);
             return elementType.getReturnedClass();
         }
         return propertyType.getReturnedClass();
@@ -96,8 +94,8 @@ public class TypeSafeQueryHelperImpl implements TypeSafeQueryHelper {
     @Override
     public <T> T createTypeSafeSelectProxy(final TypeSafeRootQueryInternal query, Class<T> clazz, TypeSafeQuerySelectionGroup group) {
         final T proxy = proxyFactory.getProxy(clazz, SelectionDtoType);
-        TypeSafeQuerySelectionProxyData data = query.getDataTree().createSelectionData(
-                null, null, clazz, group, (TypeSafeQuerySelectionProxy) proxy);
+        TypeSafeQuerySelectionProxyData data = query.getDataTree().createSelectionData(null, null, clazz, group,
+                (TypeSafeQuerySelectionProxy) proxy);
         setSelectionDtoMethodHandler(query, data);
         query.getProjections().setResultClass(clazz);
         return proxy;
@@ -108,10 +106,9 @@ public class TypeSafeQueryHelperImpl implements TypeSafeQueryHelper {
      */
     @Override
     public TypeSafeQuerySelectionProxyData createTypeSafeSelectSubProxy(TypeSafeRootQueryInternal query,
-            TypeSafeQuerySelectionProxyData parent, String propertyName,
-            Class<?> targetClass, boolean setter) {
-        TypeSafeQuerySelectionProxyData childData = query.getDataTree().createSelectionData(
-                parent, propertyName, targetClass, parent.getGroup(), null);
+            TypeSafeQuerySelectionProxyData parent, String propertyName, Class<?> targetClass, boolean setter) {
+        TypeSafeQuerySelectionProxyData childData = query.getDataTree().createSelectionData(parent, propertyName, targetClass,
+                parent.getGroup(), null);
         if (!setter && !java.util.Collection.class.isAssignableFrom(targetClass)) {
             // only need method handler when the data is being retrieved,
             // on set we will just return the proxy data.
@@ -121,15 +118,14 @@ public class TypeSafeQueryHelperImpl implements TypeSafeQueryHelper {
     }
 
     /**
-     * Build nested property path when values are retrieved, link to projections when values are set.
+     * Build nested property path when values are retrieved, link to projections
+     * when values are set.
      */
-    void setSelectionDtoMethodHandler(final TypeSafeRootQueryInternal query,
-            final TypeSafeQuerySelectionProxyData data) {
+    void setSelectionDtoMethodHandler(final TypeSafeRootQueryInternal query, final TypeSafeQuerySelectionProxyData data) {
         if (data.getProxy() == null) {
             TypeSafeQuerySelectionProxy childProxy = null;
             if (!isBasicType(data.getPropertyType())) {
-                childProxy = (TypeSafeQuerySelectionProxy) proxyFactory.getProxy(
-                        data.getPropertyType(), SelectionDtoType);
+                childProxy = (TypeSafeQuerySelectionProxy) proxyFactory.getProxy(data.getPropertyType(), SelectionDtoType);
                 data.setProxy(childProxy);
             } else {
                 // No proxy is to be set if it is a basic type, these types
@@ -141,7 +137,7 @@ public class TypeSafeQueryHelperImpl implements TypeSafeQueryHelper {
     }
 
     boolean isBasicType(Class<?> returnType) {
-        return sessionFactory.getTypeHelper().basic(returnType) != null;
+        return TypeFactory.basic(returnType.getName()) != null;
     }
 
     /**
@@ -157,7 +153,8 @@ public class TypeSafeQueryHelperImpl implements TypeSafeQueryHelper {
             throw new IllegalArgumentException(String.format("The subtype [%s] is not "
                     + "known in hibernate. Maybe you forgot to map it?.", subtype));
         }
-        // we now know the subtype is a hibernate type and it should be a subclass of the proxy,
+        // we now know the subtype is a hibernate type and it should be a
+        // subclass of the proxy,
         // bind the same data object to the subtype:
         T subtypeProxy = proxyFactory.getProxy(subtype, EntityType);
         TypeSafeQueryProxyData data = ((TypeSafeQueryProxy) proxy).getTypeSafeProxyData();
@@ -171,40 +168,40 @@ public class TypeSafeQueryHelperImpl implements TypeSafeQueryHelper {
     @Override
     public <T> T createTypeSafeFromProxy(TypeSafeQueryInternal query, Class<T> clazz) {
         T proxy = proxyFactory.getProxy(clazz, EntityType);
-        TypeSafeQueryProxyData data = query.getDataTree().createData(null,
-                null, clazz, EntityType, null, (TypeSafeQueryProxy) proxy);
+        TypeSafeQueryProxyData data = query.getDataTree().createData(null, null, clazz, EntityType, null, (TypeSafeQueryProxy) proxy);
         setEntityProxyMethodListener(query, (TypeSafeQueryProxy) proxy, data);
         return proxy;
     }
 
     /**
-     * Sets the method handler on the proxy to create new proxies when
-     * hibernate entities are traversed via the getter/setters.
+     * Sets the method handler on the proxy to create new proxies when hibernate
+     * entities are traversed via the getter/setters.
      */
-    private void setEntityProxyMethodListener(final TypeSafeQueryInternal query,
-            final TypeSafeQueryProxy proxy, final TypeSafeQueryProxyData data) {
+    private void setEntityProxyMethodListener(final TypeSafeQueryInternal query, final TypeSafeQueryProxy proxy,
+            final TypeSafeQueryProxyData data) {
         ((ProxyObject) proxy).setHandler(new EntityProxyMethodHandler(this, query, data));
     }
 
     /**
-     * Creates data based on the hibernate metadata for the given <code>property</code>.
+     * Creates data based on the hibernate metadata for the given
+     * <code>property</code>.
      */
     TypeSafeQueryProxyData createChildData(TypeSafeQueryInternal query, TypeSafeQueryProxyData parent, String property) {
         Type propertyType = getTargetType(parent, property);
         Class<?> targetClass = getTargetEntityClass(propertyType);
         ClassMetadata metadata = sessionFactory.getClassMetadata(targetClass);
-        if( metadata == null && !propertyType.isComponentType() ) {
+        if (metadata == null && !propertyType.isComponentType()) {
             return query.getDataTree().createData(parent, property, targetClass);
         }
         TypeSafeQueryProxyType proxyType = null;
-        if( metadata != null ) {
-            proxyType = propertyType.isCollectionType() ? EntityCollectionType: EntityType;
+        if (metadata != null) {
+            proxyType = propertyType.isCollectionType() ? EntityCollectionType : EntityType;
         } else {
-            proxyType = propertyType instanceof ComponentType ? ComponentType: CompositeType;
+            proxyType = propertyType instanceof ComponentType ? ComponentType : CompositeType;
         }
         TypeSafeQueryProxy proxy = (TypeSafeQueryProxy) proxyFactory.getProxy(targetClass, proxyType);
-        TypeSafeQueryProxyData data = query.getDataTree().createData(parent, property, targetClass,
-                proxyType, metadata == null ? null: metadata.getIdentifierPropertyName(), proxy);
+        TypeSafeQueryProxyData data = query.getDataTree().createData(parent, property, targetClass, proxyType,
+                metadata == null ? null : metadata.getIdentifierPropertyName(), proxy);
         setEntityProxyMethodListener(query, proxy, data);
         return data;
     }
@@ -213,22 +210,23 @@ public class TypeSafeQueryHelperImpl implements TypeSafeQueryHelper {
      * {@inheritDoc}
      */
     @Override
-    public TypeSafeQueryProxyData createTypeSafeJoinProxy(TypeSafeQueryInternal query,
-            TypeSafeQueryProxyData parent, String propertyName, Class<?> targetClass) {
+    public TypeSafeQueryProxyData createTypeSafeJoinProxy(TypeSafeQueryInternal query, TypeSafeQueryProxyData parent, String propertyName,
+            Class<?> targetClass) {
         return createChildData(query, parent, propertyName);
     }
 
     /**
-     * Simple conversion to the property path to be used in the query building phase.
+     * Simple conversion to the property path to be used in the query building
+     * phase.
      */
     String method2PropertyName(Method m) {
         String name = m.getName();
         int start;
-        if (name.startsWith("get") ) {
+        if (name.startsWith("get")) {
             start = 3;
-        } else if ( name.startsWith("is") ) {
+        } else if (name.startsWith("is")) {
             start = 2;
-        } else if( name.startsWith("set") ) {
+        } else if (name.startsWith("set")) {
             start = 3;
         } else {
             return name;
@@ -243,19 +241,17 @@ public class TypeSafeQueryHelperImpl implements TypeSafeQueryHelper {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public String toLiteral(Object value) {
-        if( value == null ) {
+        if (value == null) {
             return "null";
         }
-        BasicType basic = sessionFactory.getTypeHelper().basic(value.getClass());
-        if( basic instanceof StringRepresentableType<?> ) {
-            String literal = ((StringRepresentableType<Object>) basic).toString(value);
-            if( value instanceof Number || value instanceof Boolean ) {
-                return literal;
+        Type basic = TypeFactory.basic(value.getClass().getName());
+        if (basic != null) {
+            if (value instanceof Number || value instanceof Boolean) {
+                return String.valueOf(value);
             }
-            return "'" + literal + "'";
+            return "'" + value + "'";
         } else {
             throw new IllegalArgumentException("Failed to convert: " + value);
         }
@@ -266,7 +262,7 @@ public class TypeSafeQueryHelperImpl implements TypeSafeQueryHelper {
      */
     @Override
     public String getResolvedTypeName(Class<?> javaType) {
-        return sessionFactory.getTypeHelper().basic(javaType).getName();
+        return TypeFactory.basic(javaType.getName()).getName();
     }
 
     /**
@@ -275,7 +271,7 @@ public class TypeSafeQueryHelperImpl implements TypeSafeQueryHelper {
     @SuppressWarnings("unchecked")
     public <T> T getDummyValue(Class<T> clazz) {
         Class<?> primitiveClass = getPrimitiveClass(clazz);
-        if( primitiveClass != null ) {
+        if (primitiveClass != null) {
             return (T) defaultPrimitiveValue(primitiveClass);
         }
         return null;

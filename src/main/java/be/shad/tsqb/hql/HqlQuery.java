@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.hibernate.engine.jdbc.internal.BasicFormatterImpl;
+import org.hibernate.jdbc.util.BasicFormatterImpl;
 import org.hibernate.transform.ResultTransformer;
 
 import be.shad.tsqb.values.HqlQueryValue;

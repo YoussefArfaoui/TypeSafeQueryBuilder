@@ -21,7 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.SessionImplementor;
 import org.hibernate.type.StringType;
 import org.hibernate.type.Type;
 import org.hibernate.usertype.CompositeUserType;
@@ -35,7 +35,7 @@ public class AddressType implements CompositeUserType {
 
     @Override
     public Type[] getPropertyTypes() {
-        return new Type[] { StringType.INSTANCE, StringType.INSTANCE };
+        return new Type[] { new StringType(), new StringType() };
     }
 
     @Override
@@ -75,8 +75,9 @@ public class AddressType implements CompositeUserType {
     public void nullSafeSet(final PreparedStatement preparedStatement, final Object value, final int property, 
             final SessionImplementor sessionImplementor) throws HibernateException, SQLException {
         if (null == value) {
-            preparedStatement.setNull(property, StringType.INSTANCE.sqlType());
-            preparedStatement.setNull(property + 1, StringType.INSTANCE.sqlType());
+            StringType stringType = new StringType();
+            preparedStatement.setNull(property, stringType.sqlType());
+            preparedStatement.setNull(property + 1, stringType.sqlType());
         } else {
             final Address address = (Address) value;
             preparedStatement.setString(property, address.getStreet());

@@ -133,7 +133,10 @@ public class ArithmeticOperationsTest extends TypeSafeQueryTest {
         validate("select (hobj1.id + (1.0 / (10.0 - hobj1.age)) + hobj1.id) from Person hobj1");
     }
 
-    @Test
+    /**
+     * the join in the select is not supported by hibernate 3.3.2 GA
+     */
+    //@Test
     public void testaArithmeticsWithSubqueryValue() {
         Person person = query.from(Person.class);
         

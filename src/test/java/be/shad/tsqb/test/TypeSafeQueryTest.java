@@ -28,7 +28,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.AnnotationConfiguration;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -45,7 +45,8 @@ import be.shad.tsqb.values.HqlQueryValue;
 public class TypeSafeQueryTest {
 
     protected final Logger logger = LogManager.getLogger(getClass());
-    @Rule public TestName name = new TestName();
+    @Rule
+    public TestName name = new TestName();
 
     private SessionFactory sessionFactory;
     private TypeSafeQueryDao typeSafeQueryDao;
@@ -54,21 +55,20 @@ public class TypeSafeQueryTest {
     protected List<?> doQueryResult;
 
     /**
-     * Initialize the sessionFactory and helper.
-     * The helper has an override to generate shorter entity names
-     * for readability (and it also works in hibernate...)
+     * Initialize the sessionFactory and helper. The helper has an override to
+     * generate shorter entity names for readability (and it also works in
+     * hibernate...)
      */
     @Before
     public void initialize() {
-        Configuration config = new Configuration();
-        config.configure("be/shad/tsqb/tests/hibernate.cfg.xml");
-        sessionFactory = config.buildSessionFactory();
+        sessionFactory = new AnnotationConfiguration().configure("be/shad/tsqb/tests/hibernate.cfg.xml").buildSessionFactory();
+
         helper = new TypeSafeQueryHelperImpl(sessionFactory) {
             // trim package for readability:
             @Override
             public String getEntityName(Class<?> entityClass) {
                 String entityName = super.getEntityName(entityClass);
-                return entityName.substring(entityName.lastIndexOf(".")+1);
+                return entityName.substring(entityName.lastIndexOf(".") + 1);
             }
         };
         typeSafeQueryDao = new TypeSafeQueryDaoImpl(sessionFactory, helper);
@@ -90,8 +90,8 @@ public class TypeSafeQueryTest {
     }
 
     /**
-     * Creates a query using a session calls list, hibernate should
-     * not complain if the query is syntactically correct.
+     * Creates a query using a session calls list, hibernate should not complain
+     * if the query is syntactically correct.
      * <p>
      * The hql query is returned.
      */
@@ -99,8 +99,7 @@ public class TypeSafeQueryTest {
         HqlQuery hqlQuery = typeSafeQuery.toHqlQuery();
 
         doQueryResult = typeSafeQueryDao.doQueryResults(typeSafeQuery);
-        logger.debug("{}:\n{}\n--- params: {}\n", name.getMethodName(),
-                hqlQuery.getHql(), hqlQuery.getParams());
+        logger.debug("{}:\n{}\n--- params: {}\n", name.getMethodName(), hqlQuery.getHql(), hqlQuery.getParams());
 
         // return for additional checks:
         return hqlQuery;
@@ -119,7 +118,7 @@ public class TypeSafeQueryTest {
 
         List<Object> actualParams = new LinkedList<>();
         if (hqlQuery.getParams() != null) {
-            for(Object queryParam: hqlQuery.getParams()) {
+            for (Object queryParam : hqlQuery.getParams()) {
                 if (queryParam instanceof NamedParameter) {
                     actualParams.add(((NamedParameter) queryParam).getValue());
                 } else {
@@ -135,16 +134,14 @@ public class TypeSafeQueryTest {
         assertEquals(expectedHql + result, expected.getParams().size(), actualParams.size());
         Iterator<Object> expectedIt = expected.getParams().iterator();
         Iterator<Object> actualIt = actualParams.iterator();
-        for(;expectedIt.hasNext() && actualIt.hasNext();) {
+        for (; expectedIt.hasNext() && actualIt.hasNext();) {
             Object expectedParam = expectedIt.next();
             Object actualParam = actualIt.next();
             if (expectedParam instanceof Collection) {
                 // don't care if the collection has a different order,
                 // as long as the elements are the same:
                 assertTrue(expectedHql + result, actualParam instanceof Collection);
-                assertEquals(expectedHql + result,
-                        new HashSet<>((Collection<?>) expectedParam),
-                        new HashSet<>((Collection<?>) actualParam));
+                assertEquals(expectedHql + result, new HashSet<>((Collection<?>) expectedParam), new HashSet<>((Collection<?>) actualParam));
             } else {
                 assertEquals(expectedHql + result, expectedParam, actualParam);
             }

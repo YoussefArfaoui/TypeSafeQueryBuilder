@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.usertype.UserType;
 
 public class TextWrappingObjectUserType implements UserType {
@@ -47,28 +46,7 @@ public class TextWrappingObjectUserType implements UserType {
         return false;
     }
 
-    @Override
-    public Object nullSafeGet(ResultSet rs, String[] names, SessionImplementor session, Object owner) throws HibernateException, SQLException {
-        final String text = rs.getString(names[0]);
-        if (rs.wasNull()) {
-            return null;
-        }
-        return new TextWrappingObject(text);
-    }
-
-    @Override
-    public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session) throws HibernateException, SQLException {
-        if (value == null) {
-            st.setNull(index, SQL_TYPE);
-        } else {
-            if (value instanceof TextWrappingObject) {
-                TextWrappingObject obj = (TextWrappingObject) value;
-                st.setObject(index, obj.getText(), SQL_TYPE);
-            } else {
-                throw new HibernateException("Expected a TextWrappingObject");
-            }
-        }
-    }
+  
 
     @Override
     public Object replace(Object original, Object target, Object owner) throws HibernateException {
@@ -83,5 +61,29 @@ public class TextWrappingObjectUserType implements UserType {
     @Override
     public int[] sqlTypes() {
         return new int[] { SQL_TYPE };
+    }
+
+    @Override
+    public Object nullSafeGet(ResultSet rs, String[] names, Object owner) throws HibernateException, SQLException {
+        final String text = rs.getString(names[0]);
+        if (rs.wasNull()) {
+            return null;
+        }
+        return new TextWrappingObject(text);
+    }
+
+    @Override
+    public void nullSafeSet(PreparedStatement st, Object value, int index) throws HibernateException, SQLException {
+        if (value == null) {
+            st.setNull(index, SQL_TYPE);
+        } else {
+            if (value instanceof TextWrappingObject) {
+                TextWrappingObject obj = (TextWrappingObject) value;
+                st.setObject(index, obj.getText(), SQL_TYPE);
+            } else {
+                throw new HibernateException("Expected a TextWrappingObject");
+            }
+        }
+        
     }
 }
