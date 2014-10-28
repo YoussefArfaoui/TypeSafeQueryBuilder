@@ -29,7 +29,12 @@ public interface OnGoingRestriction<VAL, CONTINUED extends ContinuedOnGoingRestr
         ORIGINAL extends OnGoingRestriction<VAL, CONTINUED, ORIGINAL>> {
     
     /**
-     * @see #not(VAL)
+     * @return the group to which this restriction belongs
+     */
+    RestrictionsGroup getGroup();
+    
+    /**
+     * @see #notEq(VAL)
      * @return binder with a method to set an alias for the parameter
      */
     SingleNamedParameterBinder<VAL, CONTINUED, ORIGINAL> notEq();
