@@ -1,12 +1,12 @@
 /*
  * Copyright Gert Wijns gert.wijns@gmail.com
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,16 +38,16 @@ import be.shad.tsqb.values.TypeSafeValue;
 /**
  * Takes a partially built restriction and provides methods complete it.
  * Type specific methods are added in subclasses of this class.
- * 
+ *
  * @see RestrictionImpl
  */
-public abstract class OnGoingRestrictionImpl<VAL, CONTINUED extends ContinuedOnGoingRestriction<VAL, CONTINUED, ORIGINAL>, 
+public abstract class OnGoingRestrictionImpl<VAL, CONTINUED extends ContinuedOnGoingRestriction<VAL, CONTINUED, ORIGINAL>,
             ORIGINAL extends OnGoingRestriction<VAL, CONTINUED, ORIGINAL>> extends RestrictionChainableDelegatingImpl
         implements OnGoingRestriction<VAL, CONTINUED, ORIGINAL>, ContinuedOnGoingRestriction<VAL, CONTINUED, ORIGINAL>, DirectValueProvider<VAL> {
-    
+
     private final RestrictionNodeType restrictionNodeType;
     protected final TypeSafeValue<VAL> startValue;
-    
+
     /*
      * NOTE: The restriction is kept around so that it is possible to 'save' the restriction to alter the query
      * without having to rebuild it completely.
@@ -66,24 +66,24 @@ public abstract class OnGoingRestrictionImpl<VAL, CONTINUED extends ContinuedOnG
         this.restrictionNodeType = restrictionNodeType;
         this.startValue = argument;
     }
-    
+
     /**
      * The required value class, which will be checked in the type safe values later.
      */
     protected abstract Class<VAL> getSupportedValueClass();
-    
+
     /**
      * Delegates to subclass to create the correct type.
      */
     protected abstract CONTINUED createContinuedOnGoingRestriction(
-            RestrictionNodeType restrictionNodeType, 
+            RestrictionNodeType restrictionNodeType,
             TypeSafeValue<VAL> previousValue);
 
     /**
      * Delegates to subclass to create the correct type.
      */
     protected abstract ORIGINAL createOriginalOnGoingRestriction(
-            RestrictionNodeType restrictionNodeType, 
+            RestrictionNodeType restrictionNodeType,
             TypeSafeValue<VAL> previousValue);
 
     protected NamedParameterBinderImpl<VAL, CONTINUED, ORIGINAL> createNamedParameterBinder(
@@ -91,7 +91,7 @@ public abstract class OnGoingRestrictionImpl<VAL, CONTINUED extends ContinuedOnG
         return new NamedParameterBinderImpl<VAL, CONTINUED, ORIGINAL>(
                 group.getQuery(), value, next);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -109,8 +109,7 @@ public abstract class OnGoingRestrictionImpl<VAL, CONTINUED extends ContinuedOnG
         TypeSafeValue<VAL> leftVal = (TypeSafeValue<VAL>) left;
         TypeSafeValue<VAL> rightVal = (TypeSafeValue<VAL>) right;
         if (restriction == null) {
-            restriction = new RestrictionImpl<VAL>(group, predicate, 
-                    leftVal, operator, rightVal);
+            restriction = new RestrictionImpl<VAL>(group, predicate, leftVal, operator, rightVal);
             if (restrictionNodeType == And) {
                 group.and(restriction);
             } else {
@@ -121,8 +120,8 @@ public abstract class OnGoingRestrictionImpl<VAL, CONTINUED extends ContinuedOnG
             restriction.setOperator(operator);
             restriction.setRight(rightVal);
         }
-        // continue with the next one assuming And, if #or() is called the instance 
-        // is simply discarded and one with Or is returned instead. 
+        // continue with the next one assuming And, if #or() is called the instance
+        // is simply discarded and one with Or is returned instead.
         return createContinuedOnGoingRestriction(And, leftVal == null ? rightVal: leftVal);
     }
 
@@ -233,7 +232,7 @@ public abstract class OnGoingRestrictionImpl<VAL, CONTINUED extends ContinuedOnG
         CollectionTypeSafeValue<VAL> value = createCollectionValue();
         return createNamedParameterBinder(value, notIn(value));
     }
-    
+
     /**
      * Create a new unbound collection value.
      */
@@ -252,16 +251,16 @@ public abstract class OnGoingRestrictionImpl<VAL, CONTINUED extends ContinuedOnG
     protected DirectTypeSafeValue<VAL> createDummyDirectValue() {
         return new DirectTypeSafeValue<VAL>(group.getQuery(), getSupportedValueClass());
     }
-    
+
     @Override
-    public final DirectTypeSafeValue<VAL> createEmptyDirectValue() {
+    public final DirectTypeSafeValue<VAL> createEmptyDirectValue(TypeSafeQueryInternal query) {
         if (predicate == null && group.getQuery().getDefaultRestrictionPredicate() == null) {
             throw new IllegalArgumentException("When using restrictions, don't use .eq(null), use .isNull() instead. "
                     + "An exception to this rule is when a predicate which can filter null values is used.");
         }
         return createDummyDirectValue();
     }
-    
+
     @Override
     public ORIGINAL and() {
         return createOriginalOnGoingRestriction(And, startValue);
@@ -271,12 +270,12 @@ public abstract class OnGoingRestrictionImpl<VAL, CONTINUED extends ContinuedOnG
     public ORIGINAL or() {
         return createOriginalOnGoingRestriction(Or, startValue);
     }
-    
+
     @Override
     public CONTINUED notEq(VAL value, RestrictionPredicate predicate) {
         return notEq(toValue(value, predicate));
     }
-    
+
     @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public <T extends VAL> CONTINUED notIn(Collection<T> values, RestrictionPredicate predicate) {
@@ -284,12 +283,12 @@ public abstract class OnGoingRestrictionImpl<VAL, CONTINUED extends ContinuedOnG
         // suppressing warnings because we know T is a kind of VAL, and we won't be changing the collection internally
         return notIn(new CollectionTypeSafeValue<VAL>(group.getQuery(), getSupportedValueClass(), (Collection) values));
     }
-    
+
     @Override
     public CONTINUED eq(VAL value, RestrictionPredicate predicate) {
         return eq(toValue(value, predicate));
     }
-    
+
     @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public <T extends VAL> CONTINUED in(Collection<T> values, RestrictionPredicate predicate) {
