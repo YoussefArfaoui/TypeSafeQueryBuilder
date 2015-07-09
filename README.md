@@ -1,3 +1,5 @@
+<i>`Note : This branch was created to provide support for old hibernate versions: 3.x.y.z versions`</i>
+
 The goal of <i>`TypeSafeQueryBuilder`</i> is to allow writing queries using your hibernate configured entity classes rather than hand-coded HQL strings.
 
 For an overview of the available functionality, see [Functionality overview](https://github.com/gert-wijns/TypeSafeQueryBuilder/wiki/Functionality-overview). The rest of this page will be a basic tutorial to get started. Basic knowledge of HQL is required to understand the examples and functionality overview.
